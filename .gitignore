@@ -4,3 +4,6 @@ build
 dist
 *.egg-info
 *.pyc
+venv/
+*.swp
+db.sqlite3

@@ -34,16 +34,21 @@ def create_parser():
         help='Número da proposição.',
         type=int,
     )
+    parser.add_argument(
+        '-o', '--output',
+        required=False,
+        help='Camido do arquivo para output',
+        type=str,
+    )
     return parser
 
 
 def main():
-    path = '/home/lrodrigues/Documents/pessoal/ponto-altran'
-
     args = create_parser().parse_args()
     dep = args.dep
     ano = args.ano
     num = args.numero
+    o = args.output
 
     print(
         str(
@@ -66,6 +71,10 @@ def main():
         dep,
         ano,
     ).main()
+
+    if o:
+        with open('{}/{}.json'.format(o, dep.replace(' ', '_')), 'w') as f:
+            json.dump(data, f, ensure_ascii=False)
 
     if num and data:
         for d in data:
