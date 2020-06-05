@@ -20,8 +20,10 @@ from rest_framework.authtoken import views as auth_views
 from rest_framework.documentation import include_docs_urls
 
 from user import views as user_views
+from updates import views as updates_views
 
 router = routers.DefaultRouter()
+router.register(r'updates', updates_views.UpdateSubscriptionViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
