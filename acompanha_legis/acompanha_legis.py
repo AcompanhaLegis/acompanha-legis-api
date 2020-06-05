@@ -2,12 +2,16 @@ import json
 import re
 import requests
 import time
+import threading
 from datetime import datetime
 
 
 class AcompanhaLegis():
     d = {
-        'host': 'https://dadosabertos.camara.leg.br/api/v2'
+        'host': 'https://dadosabertos.camara.leg.br/api/v2',
+        'summary': [],
+        'temas': [],
+        'tram': [],
     }
 
     def __init__(self, dep, ano):
@@ -37,8 +41,44 @@ class AcompanhaLegis():
 
         return id
 
-    def get_temas(self, id):
-        d = {}
+    def get_prop(self, dep_id):
+        ids = []
+        tipos = [
+            'PL',
+            'PDL',
+            'PRC',
+            'PEC',
+        ]
+        params = {
+            'idDeputadoAutor': dep_id,
+            'ano': self.d.get('ano'),
+            'siglaTipo': '',
+            'itens': 100
+        }
+
+        for sigla in tipos:
+            params['siglaTipo'] = sigla
+
+            res = requests.get(
+                '{}/proposicoes'.format(
+                    self.d.get('host'),
+                ),
+                params=params,
+                stream=True
+            ).json()
+
+            if len(res.get('dados', [])) > 0:
+                for prop in res['dados']:
+                    ids.append(prop['id'])
+
+        return ids
+
+    def set_temas(self, id):
+        d = {
+            'id': id,
+            'temas': [],
+        }
+
         res = requests.get(
             '{}/proposicoes/{}/temas'.format(
                 self.d.get('host'),
@@ -48,18 +88,22 @@ class AcompanhaLegis():
         ).json()
 
         if len(res.get('dados', [])) > 0:
-            d = {
-                'temas': []
-            }
             for data in res['dados']:
                 d['temas'].append(
                     data['tema']
                 )
 
-        return d
+        self.d['temas'].append(
+            d
+        )
 
-    def get_tram(self, id):
-        d = {}
+    def set_tram(self, id):
+        d = {
+            'id': id,
+            'relator': '',
+            'ultima_movimentacao': [],
+        }
+
         res = requests.get(
             '{}/proposicoes/{}/tramitacoes'.format(
                 self.d.get('host'),
@@ -69,12 +113,8 @@ class AcompanhaLegis():
         ).json()
 
         if len(res.get('dados', [])) > 0:
-            com = []
-            d = {
-                'ultima_movimentacao': [],
-            }
-
             res['dados'].reverse()
+
             for i in range(len(res['dados'])):
                 tram = res.get('dados')[i]
                 cod = str(tram.get('codTipoTramitacao'))
@@ -83,10 +123,6 @@ class AcompanhaLegis():
                     '',
                     tram.get('despacho'),
                     flags=re.IGNORECASE
-                )
-
-                com.append(
-                    tram.get('siglaOrgao')
                 )
 
                 if tram.get('siglaOrgao').upper() == 'MESA':
@@ -130,65 +166,79 @@ class AcompanhaLegis():
                         )
                     )
 
-        return d
+        self.d['tram'].append(
+            d
+        )
 
-    def get_prop(self, dep_id):
-        ids = []
-        tipos = [
-            'PL',
-            'PDL',
-            'PRC',
-            'PEC',
-        ]
-        params = {
-            'idDeputadoAutor': dep_id,
-            'ano': self.d.get('ano'),
-            'siglaTipo': '',
-            'itens': 100
+    def set_summary(self, id):
+        d = {
+            'id': id,
+            'comissao_atual': '',
+            'comissao_destinado': '',
         }
 
-        for sigla in tipos:
-            params['siglaTipo'] = sigla
+        res = requests.get(
+            '{}/proposicoes/{}'.format(
+                self.d.get('host'),
+                id,
+            ),
+            stream=True
+        ).json()
 
-            res = requests.get(
-                '{}/proposicoes'.format(
-                    self.d.get('host'),
-                ),
-                params=params,
-                stream=True
-            ).json()
+        prop = res.get('dados')
 
-            if len(res.get('dados', [])) > 0:
-                for prop in res['dados']:
-                    ids.append(prop['id'])
+        d['ano'] = int(prop.get('ano'))
+        d['proposicao'] = prop.get('siglaTipo').upper()
+        d['numero'] = int(prop.get('numero'))
+        d['apresentacao'] = datetime.strptime(
+            prop.get('dataApresentacao'),
+            '%Y-%m-%dT%H:%M'
+        ).strftime('%d/%m às %H:%M')
+        d['ementa'] = prop.get('ementa')
+        d['link'] = prop.get('uri')
 
-        return ids
+        self.d['summary'].append(
+            d
+        )
 
     def do_data(self, dep_id):
-        data = []
-        tpl = {
-            'ano': 0,
-            'proposicao': '',
-            'numero': 0,
-            'apresentacao': '',
-            'ementa': '',
-            'temas': '',
-            'apreciacao': '',
-            'tramitacao': '',
-            'comissao_destinado': '',
-            'comissao_atual': '',
-            'apensado': '',
-            'relator': '',
-            'ultima_movimentacao': '',
-            'link': '',
-        }
-
+        a = []
+        b = []
+        c = []
+        res = []
         count = 0
+
         props = self.get_prop(
             dep_id
         )
 
         for id in props:
+            summary = threading.Thread(
+                target=self.set_summary,
+                args=(
+                    id,
+                )
+            )
+
+            temas = threading.Thread(
+                target=self.set_temas,
+                args=(
+                    id,
+                )
+            )
+
+            tram = threading.Thread(
+                target=self.set_tram,
+                args=(
+                    id,
+                )
+            )
+
+            a.append(summary)
+            b.append(tram)
+            c.append(temas)
+
+        for i in range(len(props)):
             print(
                 '{0:.0%} '.format(
                     count/len(props)
@@ -197,39 +247,33 @@ class AcompanhaLegis():
                 flush=True
             )
 
-            d = tpl.copy()
+            if i > 0:
+                a[i-1].join()
+            a[i].start()
 
-            res = requests.get(
-                '{}/proposicoes/{}'.format(
-                    self.d.get('host'),
-                    id,
-                ),
-                stream=True
-            ).json()
+            if i > 0:
+                b[i-1].join()
+            b[i].start()
 
-            prop = res.get('dados')
-
-            d['ano'] = int(prop.get('ano'))
-            d['proposicao'] = prop.get('siglaTipo').upper()
-            d['numero'] = int(prop.get('numero'))
-            d['apresentacao'] = datetime.strptime(
-                prop.get('dataApresentacao'),
-                '%Y-%m-%dT%H:%M'
-            ).strftime('%d/%m às %H:%M')
-            d['ementa'] = prop.get('ementa')
-            d['link'] = prop.get('uri')
-
-            d = {
-                **d,
-                **self.get_temas(id),
-                **self.get_tram(id),
-            }
-
-            data.append(d)
+            if i > 0:
+                c[i-1].join()
+            c[i].start()
 
             count += 1
 
-        return data
+        for i in range(len(props)):
+            a[i].join()
+            b[i].join()
+            c[i].join()
+
+        for i in range(len(props)):
+            res.append({
+                **self.d['summary'][i],
+                **self.d['tram'][i],
+                **self.d['temas'][i],
+            })
+
+        return res
 
     def main(self):
         start_time = time.time()
