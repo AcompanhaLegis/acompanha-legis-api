@@ -21,9 +21,11 @@ from rest_framework.documentation import include_docs_urls
 
 from user import views as user_views
 from updates import views as updates_views
+from metrics import views as metrics_views
 
 router = routers.DefaultRouter()
 router.register(r'updates', updates_views.UpdateSubscriptionViewSet)
+router.register(r'metrics', metrics_views.DeputadoMetricsViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
