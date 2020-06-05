@@ -1,6 +1,7 @@
 import json
 import re
 import requests
+import time
 from datetime import datetime
 
 
@@ -231,6 +232,7 @@ class AcompanhaLegis():
         return data
 
     def main(self):
+        start_time = time.time()
         print(
             '\nColetando dados...'
         )
@@ -240,8 +242,12 @@ class AcompanhaLegis():
         )
 
         print(
-            '\n\nDados coletados: {}\n'.format(
-                len(result)
+            str(
+            '\n\nDados coletados em {:.3g}s: {}\n'
+            ''
+            ).format(
+                time.time() - start_time,
+                len(result),
             )
         )
 
