@@ -16,15 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from rest_framework.authtoken import views
+from rest_framework.authtoken import views as auth_views
+from rest_framework.documentation import include_docs_urls
 
 from user import views as user_views
 
 router = routers.DefaultRouter()
-router.register(r'users', user_views.UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', views.obtain_auth_token),
+    path('docs/', include_docs_urls(title='Acompanha legis docs', public=False)),
+    path('auth/', auth_views.obtain_auth_token),
+    path('register/', user_views.RegisterView.as_view()),
+    path('profile/', user_views.ProfileView.as_view()),
+    path('reset_password/', user_views.ResetPasswordView.as_view()),
     path('', include(router.urls)),
 ]

@@ -15,7 +15,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     valid_until = models.DateTimeField(blank=False, null=True)
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['password']
     
     objects = CustomUserManager()
     
