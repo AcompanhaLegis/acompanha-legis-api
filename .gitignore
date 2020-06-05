@@ -7,3 +7,4 @@ dist
 venv/
 *.swp
 db.sqlite3
+.env
