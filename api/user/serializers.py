@@ -14,8 +14,7 @@ class NewUserSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'is_active', 'valid_until', 'password']
-        readonly_fields = ['valid_until', 'is_active']
+        fields = ['id', 'email', 'is_active', 'valid_until']
 
 
 class ResetPasswordSerializer(serializers.ModelSerializer):

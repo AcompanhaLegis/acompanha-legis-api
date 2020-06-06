@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import views, status, authentication, permissions
 from rest_framework.response import Response
-from user.serializers import NewUserSerializer, ResetPasswordSerializer
+from user.serializers import UserSerializer, NewUserSerializer, ResetPasswordSerializer
 
 User = get_user_model()
 
@@ -48,7 +48,7 @@ class ProfileView(views.APIView):
     def get(self, request):
         user = request.user 
         serializer = UserSerializer(user, context={ 'request': request })
-        return Response(serializer.data)
+        return Response({ 'user': serializer.data })
 
     def patch(self, request):
         serializer = UserSerializer(data=request.data, partial=True)
