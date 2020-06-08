@@ -5,7 +5,7 @@ ENV TZ=America/Sao_Paulo
 
 WORKDIR /opt/acompanha_legis
 
-COPY api/ .
+COPY . .
 
 RUN mkdir -p \
     /var/run/acompanha_legis &&\

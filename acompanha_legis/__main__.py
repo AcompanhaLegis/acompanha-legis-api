@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/local/bin/python
 
 if __package__ is None or __package__ == '':
     from acompanha_legis import AcompanhaLegis

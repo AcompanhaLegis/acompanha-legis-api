@@ -1,8 +1,7 @@
 #!/usr/local/bin/python
 
-import subprocess
 from setuptools import find_packages, setup
-from distutils.cmd import Command
+from setuptools.command.install import install
 
 setup(
     name='api',

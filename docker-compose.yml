@@ -10,7 +10,7 @@ services:
       - acompanha_data:/var/lib/postgresql/data
 
   api:
-    build: .
+    build: api/.
     # command: python ./api/manage.py runserver 0.0.0.0:8000
     volumes:
       # - .:/opt/acompanha_legis
