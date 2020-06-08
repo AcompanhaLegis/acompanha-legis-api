@@ -18,6 +18,11 @@ services:
     depends_on:
       - db
 
+  acompanha_legis:
+    build: acompanha_legis/.
+    depends_on:
+      - db
+
   nginx:
     image: nginx:alpine
     environment:
