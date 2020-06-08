@@ -1,13 +1,26 @@
 FROM python:3.7-alpine
 
-WORKDIR /opt/acompanha-legis
+ENV PYTHONUNBUFFERED=1
+ENV TZ=America/Sao_Paulo
 
-ADD . .
+WORKDIR /opt/acompanha_legis
 
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+COPY api/ .
 
-RUN pip install -r requirements.txt
+RUN mkdir -p \
+    /var/run/acompanha_legis &&\
+    touch /var/run/acompanha_legis/api.pid
 
-EXPOSE 8000
+RUN apk update && apk --no-cache add --virtual build-dependencies \
+    gcc \
+    musl-dev \
+    postgresql-dev \
+    tzdata &&\
+    pip install -U pip setuptools &&\
+    ./setup.py install &&\
+    api collectstatic &&\
+    rm -rf /opt/acompanha_legis/*
 
-CMD ["python", "./api/manage.py", "runserver", "0.0.0.0:8000"]
+VOLUME ["/var/acompanha_legis/api/static"]
+
+CMD [ "gunicorn", "-b", ":8000", "-w", "4", "-p", "/var/run/acompanha_legis/api.pid", "--log-level=INFO", "--preload", "api.wsgi:application" ]
