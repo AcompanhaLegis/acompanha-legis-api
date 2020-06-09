@@ -22,10 +22,13 @@ from rest_framework.documentation import include_docs_urls
 from user import views as user_views
 from updates import views as updates_views
 from metrics import views as metrics_views
+from favorites import views as favorites_views 
 
 router = routers.DefaultRouter()
 router.register(r'updates', updates_views.UpdateSubscriptionViewSet)
 router.register(r'metrics', metrics_views.DeputadoMetricsViewSet)
+router.register(r'favorites/proposicao', favorites_views.FavoriteProposicaoViewSet)
+router.register(r'favorites/deputado', favorites_views.FavoriteDeputadoViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
