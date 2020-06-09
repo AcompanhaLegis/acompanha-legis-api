@@ -2,23 +2,39 @@ version: '3.7'
 
 services:
   db:
-    image: postgres:12
+    image: postgres:12-alpine
     env_file:
-      - ./.env
+      - ./.env.example
     restart: always
     volumes:
       - acompanha_data:/var/lib/postgresql/data
+
   api:
-    build: .
-    command: python ./api/manage.py runserver 0.0.0.0:8000
+    build: api/.
+    # command: python ./api/manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/opt/acompanha-legis:cached
-    ports:
-      - "8000:8000"
-    env_file:
-      - ./.env
+      # - .:/opt/acompanha_legis
+      - acompanha_static:/var/acompanha_legis/api/static
     depends_on:
       - db
 
+  acompanha_legis:
+    build: acompanha_legis/.
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:alpine
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./extras/nginx/api.conf:/etc/nginx/conf.d/default.conf
+      - acompanha_static:/var/acompanha_legis/api/static
+    depends_on:
+      - api
+    ports:
+      - 80:80
+
 volumes:
   acompanha_data:
+  acompanha_static:
