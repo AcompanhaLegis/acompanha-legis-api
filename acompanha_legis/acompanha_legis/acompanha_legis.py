@@ -9,9 +9,16 @@ from datetime import datetime
 class AcompanhaLegis():
     d = {
         'host': 'https://dadosabertos.camara.leg.br/api/v2',
+        'siglas': [
+            'PL',
+            'PDL',
+            'PRC',
+            'PEC',
+        ],
         'summary': [],
         'temas': [],
         'tram': [],
+        'rel': [],
     }
 
     def __init__(self, dep, ano):
@@ -43,12 +50,6 @@ class AcompanhaLegis():
 
     def get_prop(self, dep_id):
         ids = []
-        tipos = [
-            'PL',
-            'PDL',
-            'PRC',
-            'PEC',
-        ]
         params = {
             'idDeputadoAutor': dep_id,
             'ano': self.d.get('ano'),
@@ -56,7 +57,7 @@ class AcompanhaLegis():
             'itens': 100
         }
 
-        for sigla in tipos:
+        for sigla in self.d.get('siglas'):
             params['siglaTipo'] = sigla
 
             res = requests.get(
@@ -72,6 +73,38 @@ class AcompanhaLegis():
                     ids.append(prop['id'])
 
         return ids
+
+    def set_rel(self, id):
+        d = {
+            'id': id,
+            'apensado': [],
+        }
+
+        res = requests.get(
+            '{}/proposicoes/{}/relacionadas'.format(
+                self.d.get('host'),
+                id,
+            ),
+            stream=True
+        ).json()
+
+        if len(res.get('dados', [])) > 0:
+            for data in res['dados']:
+                sigla = data.get('siglaTipo')
+
+                if sigla in self.d.get('siglas'):
+                    d['apensado'].append(
+                        '{} {}/{} - {}'.format(
+                            data.get('siglaTipo'),
+                            data.get('numero'),
+                            data.get('ano'),
+                            data.get('ementa'),
+                        )
+                    )
+
+        self.d['rel'].append(
+            d
+        )
 
     def set_temas(self, id):
         d = {
@@ -144,14 +177,6 @@ class AcompanhaLegis():
 
                 if cod == '100':
                     d['tramitacao'] = tram.get('regime')
-                elif cod == '129':
-                    found = re.findall(
-                        r'apense-se.+',
-                        despacho,
-                        flags=re.IGNORECASE
-                    )
-                    if found:
-                        d['apensado'] = found[0].strip()
                 elif cod == '320':
                     d['relator'] = despacho
 
@@ -205,6 +230,7 @@ class AcompanhaLegis():
         a = []
         b = []
         c = []
+        d = []
         res = []
         count = 0
 
@@ -234,9 +260,17 @@ class AcompanhaLegis():
                 )
             )
 
+            rel = threading.Thread(
+                target=self.set_rel,
+                args=(
+                    id,
+                )
+            )
+
             a.append(summary)
             b.append(tram)
             c.append(temas)
+            d.append(rel)
 
         for i in range(len(props)):
             print(
@@ -259,18 +293,24 @@ class AcompanhaLegis():
                 c[i-1].join()
             c[i].start()
 
+            if i > 0:
+                d[i-1].join()
+            d[i].start()
+
             count += 1
 
         for i in range(len(props)):
             a[i].join()
             b[i].join()
             c[i].join()
+            d[i].join()
 
         for i in range(len(props)):
             res.append({
                 **self.d['summary'][i],
                 **self.d['tram'][i],
                 **self.d['temas'][i],
+                **self.d['rel'][i],
             })
 
         return res

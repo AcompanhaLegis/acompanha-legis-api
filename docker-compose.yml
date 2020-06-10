@@ -11,6 +11,8 @@ services:
 
   api:
     build: api/.
+    env_file:
+      - ./.env.example
     # command: python ./api/manage.py runserver 0.0.0.0:8000
     volumes:
       # - .:/opt/acompanha_legis
@@ -18,10 +20,13 @@ services:
     depends_on:
       - db
 
-  acompanha_legis:
+  trigger:
     build: acompanha_legis/.
     depends_on:
       - db
+
+  portal:
+    image: acompanha_legis_portal
 
   nginx:
     image: nginx:alpine
