@@ -27,7 +27,7 @@ class ResetPasswordView(views.APIView):
     def post(self, request):
         user = request.user
         serializer = ResetPasswordSerializer(data=request.data)
-        if data['password'] != data['confirm_password']:
+        if request.data['password'] != request.data['confirm_password']:
             return Response('Senhas nāo coincidem', status=status.HTTP_400_BAD_REQUEST)
 
         if serializer.is_valid():
