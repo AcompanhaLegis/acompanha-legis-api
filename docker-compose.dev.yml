@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:12-alpine
+    env_file:
+      - ./.env.example
+    restart: always
+    volumes:
+      - acompanha_data:/var/lib/postgresql/data
+
+  api:
+    build: api/.
+    env_file:
+      - ./.env
+    command: python ./manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./api:/opt/acompanha_legis:cached
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+
+  smtp:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+      - 1025:1025
+
+  trigger:
+    build: acompanha_legis/.
+    depends_on:
+      - db
+
+volumes:
+  acompanha_data:
+  acompanha_static:
