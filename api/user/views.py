@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from rest_framework import views, status, authentication, permissions
 from rest_framework.response import Response
+
+from api.permissions import IsOwner
+
 from user.serializers import UserSerializer, NewUserSerializer, ResetPasswordSerializer
 
 User = get_user_model()
@@ -43,7 +46,7 @@ class ProfileView(views.APIView):
         API endpoint that allows users to see and change their profile
     """
     authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwner]
 
     def get(self, request):
         user = request.user 
