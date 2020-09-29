@@ -21,6 +21,8 @@ RUN apk update && apk --no-cache add --virtual build-dependencies \
     api collectstatic &&\
     rm -rf /opt/acompanha_legis/*
 
-VOLUME ["/var/acompanha_legis/api/static"]
+COPY extras/nginx/api.conf /etc/nginx/conf.d/default.conf
+
+VOLUME ["/var/acompanha_legis/api/static", "/etc/nginx/conf.d"]
 
 CMD [ "gunicorn", "-b", ":8000", "-w", "4", "-p", "/var/run/acompanha_legis/api.pid", "--log-level=INFO", "--preload", "api.wsgi:application" ]

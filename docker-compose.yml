@@ -4,24 +4,23 @@ services:
   db:
     image: postgres:12-alpine
     env_file:
-      - ./.env.example
+      - ./.env
     restart: always
     volumes:
       - acompanha_data:/var/lib/postgresql/data
 
   api:
-    build: api/.
+    image: acompanha_legis_api
     env_file:
-      - ./.env.example
-    # command: python ./api/manage.py runserver 0.0.0.0:8000
+      - ./.env
     volumes:
-      # - .:/opt/acompanha_legis
+      - nginx:/etc/nginx/conf.d
       - acompanha_static:/var/acompanha_legis/api/static
     depends_on:
       - db
 
-  trigger:
-    build: acompanha_legis/.
+  tasks:
+    image: acompanha_legis_tasks
     depends_on:
       - db
 
@@ -33,13 +32,15 @@ services:
     environment:
       - TZ=America/Sao_Paulo
     volumes:
-      - ./extras/nginx/api.conf:/etc/nginx/conf.d/default.conf
+      - nginx:/etc/nginx/conf.d
       - acompanha_static:/var/acompanha_legis/api/static
     depends_on:
       - api
+      - portal
     ports:
       - 80:80
 
 volumes:
   acompanha_data:
   acompanha_static:
+  nginx:
