@@ -36,6 +36,6 @@ urlpatterns = [
     path('auth/', auth_views.obtain_auth_token),
     path('register/', user_views.RegisterView.as_view()),
     path('profile/', user_views.ProfileView.as_view()),
-    path('change_password/', user_views.ResetPasswordView.as_view()),
+    path('change_password/', user_views.ChangePasswordView.as_view()),
     path('', include(router.urls)),
 ]

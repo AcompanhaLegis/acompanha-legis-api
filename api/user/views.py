@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import views, status, authentication, permissions
 from rest_framework.response import Response
-from user.serializers import UserSerializer, NewUserSerializer, ResetPasswordSerializer
+from user.serializers import UserSerializer, NewUserSerializer, ChangePasswordSerializer
 
 User = get_user_model()
 
@@ -17,7 +17,7 @@ class RegisterView(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ResetPasswordView(views.APIView):
+class ChangePasswordView(views.APIView):
     """
         API endpoint that allows users to change their password
     """
@@ -26,7 +26,7 @@ class ResetPasswordView(views.APIView):
 
     def post(self, request):
         user = request.user
-        serializer = ResetPasswordSerializer(data=request.data)
+        serializer = ChangePasswordSerializer(data=request.data)
         if request.data['password'] != request.data['confirm_password']:
             return Response('Senhas nāo coincidem', status=status.HTTP_400_BAD_REQUEST)
 
