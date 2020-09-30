@@ -33,6 +33,7 @@ services:
     build: acompanha_legis/.
     depends_on:
       - db
+    command: -d "Nome Deputado" -o /var/acompanha_legis
 
   portal:
     image: acompanha_legis_portal
