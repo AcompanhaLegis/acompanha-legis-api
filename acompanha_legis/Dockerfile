@@ -19,4 +19,5 @@ RUN apk update && apk --no-cache add --virtual build-dependencies \
     ./setup.py install &&\
     rm -rf /opt/acompanha_legis/*
 
-CMD [ "acompanha_legis", "-d", "Paula Belmonte", "-o", "/var/acompanha_legis" ]
+ENTRYPOINT [ "acompanha_legis" ]
+# CMD [ "-d", "", "-o", "/var/acompanha_legis" ]

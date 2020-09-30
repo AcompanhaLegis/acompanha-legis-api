@@ -23,6 +23,7 @@ services:
     image: acompanha_legis_tasks
     depends_on:
       - db
+    command: -d "Nome Deputado" -o /var/acompanha_legis
 
   portal:
     image: acompanha_legis_portal
