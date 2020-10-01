@@ -15,8 +15,6 @@ services:
       - ./.env
     volumes:
       - ./api:/opt/acompanha_legis:cached
-      - nginx:/etc/nginx/conf.d
-      - acompanha_static:/var/acompanha_legis/api/static
     depends_on:
       - db
     command: python ./api/manage.py runserver 0.0.0.0:8000
@@ -35,22 +33,5 @@ services:
       - db
     command: -d "Nome Deputado" -o /var/acompanha_legis
 
-  portal:
-    image: acompanha_legis_portal
-
-  nginx:
-    image: nginx:alpine
-    environment:
-      - TZ=America/Sao_Paulo
-    volumes:
-      - nginx:/etc/nginx/conf.d
-      - acompanha_static:/var/acompanha_legis/api/static
-    depends_on:
-      - api
-    ports:
-      - 80:80
-
 volumes:
   acompanha_data:
-  acompanha_static:
-  nginx:
