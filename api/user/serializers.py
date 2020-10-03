@@ -40,7 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['is_active', 'valid_until']
 
 
-class ResetPasswordSerializer(serializers.ModelSerializer):
+class ChangePasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['password']
