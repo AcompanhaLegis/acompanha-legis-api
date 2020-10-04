@@ -80,7 +80,7 @@ And always be considerate and respectful.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning.
+We will use [SemVer](http://semver.org/) for versioning.
 
 ## License
 
