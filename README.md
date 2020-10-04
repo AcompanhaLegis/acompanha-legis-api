@@ -1,5 +1,5 @@
 # Acompanha Legis
-> Para ler esse arquivo em português, vá ao [README-ptbr.md](tobedone)
+> Para ler esse arquivo em português, vá ao [README-ptbr.md](https://github.com/AcompanhaLegis/acompanha-legis-api/blob/master/README-PTBR.md)
 
 This is a project for compile data from Dados Abertos da Camara and serve though API to [Camara data portal](https://github.com/AcompanhaLegis/camara-data-portal).
 
