@@ -88,7 +88,7 @@ E sempre respeite as pessoas da comunidade.
 
 ## Versionamento
 
-Utilizamos [SemVer](http://semver.org/).
+Ainda não estamos usando nenhum. Mas quando resolvermos isso, usaremos [SemVer](http://semver.org/).
 
 ## License
 
