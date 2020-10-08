@@ -27,6 +27,8 @@ services:
 
   portal:
     image: acompanha_legis_portal
+    volumes:
+      - acompanha_www:/var/acompanha_legis/www
 
   nginx:
     image: nginx:alpine
@@ -35,6 +37,7 @@ services:
     volumes:
       - nginx:/etc/nginx/conf.d
       - acompanha_static:/var/acompanha_legis/api/static
+      - acompanha_www:/var/acompanha_legis/www
     depends_on:
       - api
       - portal
@@ -44,4 +47,5 @@ services:
 volumes:
   acompanha_data:
   acompanha_static:
+  acompanha_www:
   nginx:
