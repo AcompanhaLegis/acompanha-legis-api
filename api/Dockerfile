@@ -15,12 +15,17 @@ RUN apk update && apk --no-cache add --virtual build-dependencies \
     gcc \
     musl-dev \
     postgresql-dev \
-    tzdata &&\
-    pip install -U pip setuptools &&\
-    ./setup.py install &&\
-    api collectstatic &&\
-    rm -rf /opt/acompanha_legis/*
+    tzdata
 
+RUN pip install -U pip setuptools
+
+RUN pip install Django
+
+CMD [ "python", "./setup.py" ]
+CMD [ "python", "api collectstatic" ]
+
+RUN rm -rf /opt/acompanha_legis/*
+   
 COPY extras/nginx/api.conf /etc/nginx/conf.d/default.conf
 
 VOLUME ["/var/acompanha_legis/api/static", "/etc/nginx/conf.d"]

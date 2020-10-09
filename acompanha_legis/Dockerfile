@@ -14,10 +14,11 @@ RUN apk update && apk --no-cache add --virtual build-dependencies \
     gcc \
     musl-dev \
     postgresql-dev \
-    tzdata &&\
-    pip install -U pip setuptools &&\
-    ./setup.py install &&\
-    rm -rf /opt/acompanha_legis/*
+    tzdata
+RUN pip install -U pip setuptools
+RUN pip install Django
+CMD [ "python", "./setup.py" ]
+RUN rm -rf /opt/acompanha_legis/*
 
 ENTRYPOINT [ "acompanha_legis" ]
 # CMD [ "-d", "", "-o", "/var/acompanha_legis" ]
