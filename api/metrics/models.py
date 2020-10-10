@@ -5,7 +5,6 @@ from django.contrib.postgres.fields import JSONField
 
 class DeputadoMetrics(models.Model):
     external_id = models.IntegerField(primary_key=True, null=False, blank=False, unique=True, editable=True)
-    twitter = models.CharField(max_length=255, null=True, blank=True)
     metrics = JSONField()
 
     def __str__(self):
