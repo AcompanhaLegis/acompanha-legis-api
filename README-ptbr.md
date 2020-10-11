@@ -41,11 +41,21 @@ Queremos ter as instruções de instalação local, mas ainda não temos.
 #### Docker
 Para rodar a api com docker, execute o seguinte comando
 ```
-$ docker-compose -f docker-compose.dev.yml up
+$ docker-compose up
 ```
 Se quiser deixar o projeto rodando sem ocupar o seu terminal, basta adicionar a flag `-d` ao final do comando acima.
 
 Depois abra `http://localhost:8000/` no seu navegador
+
+## Problemas
+
+Para algumas pessoas que fizeram o "build" do projeto anteriorment (docker-compose.dev.yml) vocêpode enfrentar algums problemas, tente os seguintes comandos:
+
+````
+$ docker-compose down && docker-compose build --no-cache
+````
+
+> :warning: Se problema persistir por favor abra uma issue para conseguir ajudar, voc� pode tentar remover manualmente as imagens api e task e rodar novamente `docker-compose up` 
 
 
 ## Desenvolvimento
@@ -66,7 +76,7 @@ $ docker-compose -f docker-compose.dev.yml exec api python ./manage.py makemigra
 Para aplicar, basta executar o comando a seguir
 
 ```
-$ docker-compose -f docker-compose.dev.yml exec api python ./manage.py migrate
+$ docker-compose exec api python ./manage.py migrate
 ```
 
 
