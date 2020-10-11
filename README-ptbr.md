@@ -66,9 +66,9 @@ Algumas dicas...
 
 ### Migrations
 
-Quando alterar alguma model, vocÃª precisarÃ¡ criar uma nova `migration` e aplicá-las para alterar o banco de dados.
+Quando alterar alguma model, você precisará criar uma nova `migration` e aplicá-las para alterar o banco de dados.
 
-Para criar novas `migrations` baseadas nas alteraÃ§Ãµes das models, execute o comando.
+Para criar novas `migrations` baseadas nas alterações das models, execute o comando.
 
 ```
 $ docker-compose exec api python ./manage.py makemigrations
@@ -106,4 +106,4 @@ Ainda não estamos usando nenhum. Mas quando resolvermos isso, usaremos [SemVer]
 Esse projeto está sob MIT License. Veja mais detalhes em [LICENSE.md](LICENSE.md).
 
 ---
-Veja quem já contribuiu com o projeto na pÃ¡gina [contributors](https://github.com/your/project/contributors).
+Veja quem já contribuiu com o projeto na página [contributors](https://github.com/your/project/contributors).
