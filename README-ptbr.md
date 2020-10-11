@@ -1,28 +1,28 @@
 # Acompanha Legis
 
-Esse projeto compila dados dos Dados Abertos da Camara e os disponibiliza através de uma API para [Camara data portal](https://github.com/AcompanhaLegis/camara-data-portal).
+Esse projeto compila dados dos Dados Abertos da Camara e os disponibiliza atravÃ©s de uma API para [Camara data portal](https://github.com/AcompanhaLegis/camara-data-portal).
 
 
-## Começando
+## ComeÃ§ando
 
-Essas instruções vão te ajudar a ter uma cópia do projeto rodando no seu computador com docker para desenvolvimento.
+Essas instruÃ§Ãµes vÃ£o te ajudar a ter uma cÃ³pia do projeto rodando no seu computador com docker para desenvolvimento.
 Se quiser, fazer o deploy do projeto, veja mais nas notas de deploy
 
 
-### Pré-requisitos
+### PrÃ©-requisitos
 
-Primeiro, instale docker, e siga os passos de instalação.
+Primeiro, instale docker, e siga os passos de instalaÃ§Ã£o.
 
-Se quiser rodar localmente, é possível. Mas ainda não temos instruções aqui. Foi mal :(
+Se quiser rodar localmente, Ã© possÃ­vel. Mas ainda nÃ£o temos instruÃ§Ãµes aqui. Foi mal :(
 
 
-### Instalação
+### InstalaÃ§Ã£o
 
 #### Docker
 
 1. Instale docker
-Para instalar, vá ao [site do docker](https://docs.docker.com/get-docker/)
-e siga as instruções de instalação para o seu sistema operacional.
+Para instalar, vÃ¡ ao [site do docker](https://docs.docker.com/get-docker/)
+e siga as instruÃ§Ãµes de instalaÃ§Ã£o para o seu sistema operacional.
 
 1. Copie o arquivo de ambiente de exemplo
 
@@ -33,7 +33,7 @@ $ cp .env.example .env
 
 #### Local
 
-Queremos ter as instruções de instalação local, mas ainda não temos.
+Queremos ter as instruÃ§Ãµes de instalaÃ§Ã£o local, mas ainda nÃ£o temos.
 
 
 ## Rodar o projeto
@@ -49,13 +49,13 @@ Depois abra `http://localhost:8000/` no seu navegador
 
 ## Problemas
 
-Para algumas pessoas que fizeram o "build" do projeto anteriorment (docker-compose.dev.yml) vocêpode enfrentar algums problemas, tente os seguintes comandos:
+Para algumas pessoas que fizeram o "build" do projeto anteriorment (docker-compose.dev.yml) você pode enfrentar algums problemas, tente os seguintes comandos:
 
 ````
 $ docker-compose down && docker-compose build --no-cache
 ````
 
-> :warning: Se problema persistir por favor abra uma issue para conseguir ajudar, voc� pode tentar remover manualmente as imagens api e task e rodar novamente `docker-compose up` 
+> :warning: Se problema persistir por favor abra uma issue para conseguir ajudar, vocÃ pode tentar remover manualmente as imagens api e task e rodar novamente `docker-compose up` 
 
 
 ## Desenvolvimento
@@ -65,9 +65,9 @@ Algumas dicas...
 
 ### Migrations
 
-Quando alterar alguma model, você precisará criar uma nova `migration` e aplicá-las para alterar o banco de dados.
+Quando alterar alguma model, vocÃª precisarÃ¡ criar uma nova `migration` e aplicÃ¡-las para alterar o banco de dados.
 
-Para criar novas `migrations` baseadas nas alterações das models, execute o comando.
+Para criar novas `migrations` baseadas nas alteraÃ§Ãµes das models, execute o comando.
 
 ```
 $ docker-compose -f docker-compose.dev.yml exec api python ./manage.py makemigrations
@@ -82,7 +82,7 @@ $ docker-compose exec api python ./manage.py migrate
 
 ## Deploy
 
-Adicionar informações para fazer deploy do sistema
+Adicionar informaÃ§Ãµes para fazer deploy do sistema
 
 ## Feito com
 
@@ -92,17 +92,17 @@ Adicionar informações para fazer deploy do sistema
 
 Para contribuir, leia o arquivo [CONTRIBUTING.md](tobedone) e veja mais detalhes de como enviar `pull requests`.
 
-## Código de conduta
-Por favor leia o [Código de conduta](https://github.com/AcompanhaLegis/code-of-conduct).
+## CÃ³digo de conduta
+Por favor leia o [CÃ³digo de conduta](https://github.com/AcompanhaLegis/code-of-conduct).
 E sempre respeite as pessoas da comunidade.
 
 ## Versionamento
 
-Ainda não estamos usando nenhum. Mas quando resolvermos isso, usaremos [SemVer](http://semver.org/).
+Ainda nÃ£o estamos usando nenhum. Mas quando resolvermos isso, usaremos [SemVer](http://semver.org/).
 
 ## License
 
-Esse projeto está sob MIT License. Veja mais detalhes em [LICENSE.md](LICENSE.md).
+Esse projeto estÃ¡ sob MIT License. Veja mais detalhes em [LICENSE.md](LICENSE.md).
 
 ---
-Veja quem já contribuiu com o projeto na página [contributors](https://github.com/your/project/contributors).
+Veja quem jÃ¡ contribuiu com o projeto na pÃ¡gina [contributors](https://github.com/your/project/contributors).
