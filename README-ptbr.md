@@ -50,7 +50,7 @@ Depois abra `http://localhost:8000/` no seu navegador
 
 ## Problemas
 
-Para algumas pessoas que fizeram o "build" do projeto anteriorment (docker-compose.dev.yml) você pode enfrentar algums problemas, tente os seguintes comandos:
+Para algumas pessoas que fizeram o "build" do projeto anteriormente (docker-compose.dev.yml) você pode enfrentar algums problemas, tente os seguintes comandos:
 
 ````
 $ docker-compose down && docker-compose build --no-cache
