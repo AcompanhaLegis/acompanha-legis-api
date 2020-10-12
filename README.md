@@ -38,8 +38,18 @@ We plan to have the tutorial to install locally, but we do not yet.
 #### Docker
 To run the api with docker, just run the following command
 ```
-$ docker-compose -f docker-compose.dev.yml up
+$ docker-compose up
 ```
+
+## Troubleshooting
+
+For some people who built the project previously (docker-compose.dev.yml) you may face some problems, try the following commands:
+
+````
+$ docker-compose down && docker-compose build --no-cache
+````
+
+> :warning: If the problem persists please add an issue to get help, you can also try to remove the api and the task images manually and re-run `docker-compose up`
 
 ## Development
 
@@ -52,7 +62,7 @@ When changing a model, you will need to create new migrations and migrate them s
 To create migrations based on the the changes in the model, run the following command
 
 ```
-$ docker-compose -f docker-compose.dev.yml exec api python ./manage.py makemigrations
+$ docker-compose exec api python ./manage.py makemigrations
 ```
 
 To migrate and apply them to the database, run the following command

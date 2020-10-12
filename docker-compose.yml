@@ -10,38 +10,22 @@ services:
       - acompanha_data:/var/lib/postgresql/data
 
   api:
-    image: acompanha_legis_api
+    build: api/.
     env_file:
       - ./.env
     volumes:
-      - nginx:/etc/nginx/conf.d
-      - acompanha_static:/var/acompanha_legis/api/static
+      - ./api:/opt/acompanha_legis:cached
     depends_on:
       - db
-
-  tasks:
-    image: acompanha_legis_tasks
-    depends_on:
-      - db
-    command: -d "Nome Deputado" -o /var/acompanha_legis
-
-  portal:
-    image: acompanha_legis_portal
-
-  nginx:
-    image: nginx:alpine
-    environment:
-      - TZ=America/Sao_Paulo
-    volumes:
-      - nginx:/etc/nginx/conf.d
-      - acompanha_static:/var/acompanha_legis/api/static
-    depends_on:
-      - api
-      - portal
+    command: python ./manage.py runserver 0.0.0.0:8000
     ports:
-      - 80:80
+      - 8000:8000
+
+  smtp:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+      - 1025:1025
 
 volumes:
   acompanha_data:
-  acompanha_static:
-  nginx:
