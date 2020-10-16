@@ -27,4 +27,4 @@ jobs:
         pip install -r api/requirements.txt
     - name: Run Tests
       run: |
-        python api/manage.py test
+        docker-compose exec api python manage.py test
