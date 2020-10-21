@@ -38,3 +38,15 @@ You can suggest implementations approaches, fixes, etc. Sometimes we need to mak
 project is open source, you can have your own fork within your more urgent or "refused" ideas.
 
 :warning: Overall, be respectful while discussing the issues, it should be a friendly environment for anyone interested on the project.
+
+# Testing
+
+If you are writing new code, remember adding tests to confirm your code behaves as expected. Same is valid when you are refactoring or changing old code, but also make sure you had run previous tests to guarantee your changes didn't affect the application unexpectedly.
+
+To execute tests, run:
+
+```bash
+  $ docker-compose exec api python manage.py test
+```
+
+Not familiar with tests? We recommend starting with these Django testing tutorials - [Testing in Django](https://docs.djangoproject.com/en/dev/topics/testing/) and [Testing tutorial](https://docs.djangoproject.com/en/dev/intro/tutorial05/)
