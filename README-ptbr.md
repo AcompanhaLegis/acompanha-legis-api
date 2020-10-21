@@ -82,7 +82,7 @@ $ docker-compose exec api python ./manage.py migrate
 
 ### Teste de emails 
 
-Para testar os emails, incluímos no projeto o [mailhog](https://github.com/mailhog/MailHog), com isso é possível testar o envio de emials  e também o recebimento acessando: `localhost:8025`, por padrão o django já está configurado para usuá-lo.
+Para testar os emails, incluímos no projeto o [mailhog](https://github.com/mailhog/MailHog), com isso é possível testar o envio de emials  e também o recebimento acessando: `localhost:8025`, por padrão o django já está configurado para usá-lo.
 
 
 ## Deploy
