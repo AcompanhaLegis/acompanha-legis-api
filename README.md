@@ -73,7 +73,7 @@ $ docker-compose -f docker-compose.dev.yml exec api python ./manage.py migrate
 
 ### Email testing
 
-To test the email, we have included the [mailhog](https://github.com/mailhog/MailHog), it makes possible to test email sending and also receiving and follow it by accessing: `localhost:8025`, by default django is already configured to use it.
+To test the email, we have included the [mailhog](https://github.com/mailhog/MailHog). It makes it possible to test sending and receiving emails by accessing: `localhost:8025`. By default django is already configured to use it.
 
 
 ## Deployment
