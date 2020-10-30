@@ -45,9 +45,9 @@ $ docker-compose up
 
 For some people who built the project previously (docker-compose.dev.yml) you may face some problems, try the following commands:
 
-````
+```
 $ docker-compose down && docker-compose build --no-cache
-````
+```
 
 > :warning: If the problem persists please add an issue to get help, you can also try to remove the api and the task images manually and re-run `docker-compose up`
 
@@ -70,6 +70,10 @@ To migrate and apply them to the database, run the following command
 ```
 $ docker-compose -f docker-compose.dev.yml exec api python ./manage.py migrate
 ```
+
+### Email testing
+
+To test the email, we have included the [mailhog](https://github.com/mailhog/MailHog). It makes it possible to test sending and receiving emails by accessing: `localhost:8025`. By default django is already configured to use it.
 
 
 ## Deployment
