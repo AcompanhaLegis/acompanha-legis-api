@@ -37,5 +37,11 @@ urlpatterns = [
     path('register/', user_views.RegisterView.as_view()),
     path('profile/', user_views.ProfileView.as_view()),
     path('change_password/', user_views.ChangePasswordView.as_view()),
+    path('password_reset/',
+         user_views.PasswordResetView.as_view(),
+         name="password_reset"),
+    path('password_reset_confirm/<uidb64>/<token>/',
+         user_views.PasswordResetConfirmView.as_view(),
+         name='password_reset_confirm'),
     path('', include(router.urls)),
 ]

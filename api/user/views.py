@@ -1,8 +1,14 @@
 from django.contrib.auth import get_user_model
 from rest_framework import views, status, authentication, permissions
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from user.serializers import UserSerializer, NewUserSerializer, ChangePasswordSerializer
+
 from api.permissions import IsOwner
+from user.serializers import (UserSerializer, NewUserSerializer,
+                              ChangePasswordSerializer,
+                              PasswordResetSerializer,
+                              PasswordResetConfirmSerializer)
+
 
 User = get_user_model()
 
@@ -37,6 +43,40 @@ class ChangePasswordView(views.APIView):
             return Response({'status': 'OK'})
         return Response(serializer.errors,
                         status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordResetView(views.APIView):
+    """
+        API endpoint that allows users to request a password reset.
+    """
+    serializer_class = PasswordResetSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = PasswordResetSerializer(data=request.data,
+                                             context={'request': request})
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+        return Response({"detail": "Password reset e-mail has been sent."},
+                        status=status.HTTP_200_OK)
+
+
+class PasswordResetConfirmView(views.APIView):
+    """
+        API endpoint that allows users with a valid token to reset their
+        passwords.
+    """
+    serializer_class = PasswordResetConfirmSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = PasswordResetConfirmSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"detail": 'Password has been reset with the new password.'}
+        )
 
 
 class ProfileView(views.APIView):
